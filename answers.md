@@ -22,3 +22,48 @@ For any given N, choosing 2^k where k is the largest int such that 2^k <= N, is 
 
 Work = O(log N)
 Span = O(log N)
+
+
+2a)
+
+A simple counterexample is a currency with denominations of 1,3,4. If we change for 6 dollars, the greedy algo would choose 2 coins for denomination 3, for a total of two coins. But the optimal solution is to use three 2- dollar coins, resulting in fewer coins (only one coin).
+
+
+2b)
+
+The optimal solution to making change for n can be built from the optimal solutions to making change for smallar amounts. If the optimal num of coins needed for all amounts less than N, then the optimal num of coins for N is one more than the minnimum of teh optimal solutions for N -Di for each denomination Di available.
+
+
+2c)
+
+top down:
+Algorithm CoinChangeRecursive(N, denominations):
+    Input: An integer N to make change for and an array of k denominations denominations[1...k]
+    Output: The minimum number of coins needed to make change for N
+
+    Let memo[0...N] be a new array
+    Set all entries of memo to -1 (indicating uncomputed)
+    Set memo[0] = 0
+
+    Function FindMinCoins(amount):
+        If memo[amount] >= 0:
+            return memo[amount]
+
+        minCoins = ∞
+        For each coin in denominations:
+            If coin <= amount:
+                candidate = FindMinCoins(amount - coin) + 1
+                minCoins = min(minCoins, candidate)
+
+        memo[amount] = minCoins
+        return minCoins
+
+    result = FindMinCoins(N)
+    If result == ∞:
+        return "Change cannot be made with the given denominations"
+    Else:
+        return result
+
+
+W = O(Nk)
+S = O(NK)
